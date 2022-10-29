@@ -3,8 +3,6 @@
 
 // Notes:
 // Occationally, not waiting for all data?
-// question cards rows/columns flipped 
-
 
 const numClues = 5;
 const numCat = 6;
@@ -35,7 +33,23 @@ function randomClue(clues){
     return clueArr;
 }
 
-
+// if value = null, set to 100
+function replaceNull(){
+    // for(i in categories){
+    //     for(c in categories[i].clues.length){
+    //         if(categories[i].clues[c].value == null){
+    //             categories[i].clues[c].value = 100;
+    //         };
+    //     };
+    // };
+    for(let i = 0; i < numCat; i++){
+        for(let c = 0; c < numClues; c++){
+            if(categories[i].clues[c].value == null){
+                categories[i].clues[c].value = 100;
+            };
+        };
+    };
+}
 
 /** Get NUM_CATEGORIES random category from API.
  * 
@@ -62,33 +76,15 @@ async function getData() {
         let randomArr = randomClue(categories[i].clues.length);
         for(r in randomArr){
             randomClues.push(categories[i].clues[r]);
-        }
+        };
         categories[i].clues.splice(0, categories[i].clues.length, ...randomClues);
-    }
-
-    // if value = null, set to 100
-    for(i in categories){
-        for(c in categories[i].clues.length){
-            if(categories[i].clues[c].value == null){
-                categories[i].clues[c].value = 100;
-            }
-        }
-    }
 
 
-  
+    };
 
+    replaceNull();
 
-}
-
-// Total number of categories??
-// async function getCategoryIds() {
-//     for (i in _.range(1, 10000)){
-//         let res = await axios.get(`http://jservice.io/api/category?id=${i + 1}`);
-//         categories.push(res.data.id);
-//     }
-//     console.log(len(categories))
-// }
+};
 
 /** Fill the HTML table#jeopardy with the categories & cells for questions.
  *
@@ -109,11 +105,11 @@ async function fillTable() {
     
     // create body
     // create row
-    for (let y = 0; y <= numClues; y++){
-        $(`<tr class="row-body" id="row-${y}"></tr>`).appendTo($tbody)
+    for (let y = 0; y < numClues; y++){
+        $(`<tr class="row-body" id="row-${y}"></tr>`).appendTo($tbody);
         
         // fill row
-        for(let x = 0; x <= numCat; x++){
+        for(let x = 0; x < numCat; x++){
             $(`<td 
                 class="card value"
                 id="${categories[x].clues[y].id}"
@@ -121,44 +117,12 @@ async function fillTable() {
                 question="${categories[x].clues[y].question}"
                 answer= "${categories[x].clues[y].answer}"
                 >${categories[x].clues[y].value}</td>`)
-                .appendTo($(`#row-${y}`))
-        }
-    }
-    
-    // // fill in questions column/category wise
-    // for(i in categories){
-    //     let clueArr = randomClue(categories[i].clues.length);
-    //     for(clue in clueArr){
-            
-            // Create card
-            // $(`<td 
-            //     class="card value"
-            //     id="${categories[i].clues[clue].id}"
-            //     value="${categories[i].clues[clue].value}"
-            //     question="${categories[i].clues[clue].question}"
-            //     answer= "${categories[i].clues[clue].answer}"
-            //     >${categories[i].clues[clue].value}</td>`)
-            //     .appendTo($(`#row-${i}`));
-
-
-    //     }   
-    // }
-
+                .appendTo($(`#row-${y}`));
+        };
+    };
 
 }
 
-// /** Handle clicking on a clue: show the question or answer.
-//  *
-//  * *** .showing property is not on there
-//  * Uses .showing property on clue to determine what to show:
-//  * - if currently null, show question & set .showing to "question"
-//  * - if currently "question", show answer & set .showing to "answer"
-//  * - if currently "answer", ignore click
-//  * */
-
-// function handleClick(e) {
-
-// }
 
 /** Wipe the current Jeopardy board, show the loading spinner,
  * and update the button used to fetch data.
