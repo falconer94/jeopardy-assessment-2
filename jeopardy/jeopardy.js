@@ -2,7 +2,9 @@
 // https://docs.google.com/spreadsheets/d/1dbuVkOAQTy5H-8PVEyZ-3KGhUVbjCBjtFp-oK_kSN4o/edit#gid=0
 
 // Notes:
-// Occationally, not waiting for all data?
+// Occasionally, not waiting for all data? 
+// inclued all categories?
+// Quotation marks on question/answer
 
 const numClues = 5;
 const numCat = 6;
@@ -55,8 +57,6 @@ function replaceNull(){
  * 
  * Returns array of category ids
  * 
- * throw/catch to skip error and keep going to include all categories, 
- * or search for total number then pick random 6??
  */
 
 async function getData() {
@@ -68,8 +68,6 @@ async function getData() {
         categories.push(res.data);
     }
 
-    // Tidy
-
     // filter 5 random questions
     for(i in categories){
         let randomClues = [];
@@ -77,6 +75,7 @@ async function getData() {
         for(r in randomArr){
             randomClues.push(categories[i].clues[r]);
         };
+        // splice: from index 0, delete all, insert random clues
         categories[i].clues.splice(0, categories[i].clues.length, ...randomClues);
 
 
