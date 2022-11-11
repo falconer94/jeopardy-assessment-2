@@ -27,6 +27,7 @@ function randomCat(){
 }
 
 // Return random array of 5 clues given number of clues
+// May push same number to clueArr
 function randomClue(clues){
     let clueArr = [];
     for(let i = 0; i < numClues ; i++){
@@ -46,6 +47,8 @@ function replaceNull(){
     // };
     for(let i = 0; i < numCat; i++){
         for(let c = 0; c < numClues; c++){
+            console.log(categories[i].clues[c]);
+            console.log(i, c)
             if(categories[i].clues[c].value == null){
                 categories[i].clues[c].value = 100;
             };
